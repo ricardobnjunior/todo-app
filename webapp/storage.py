@@ -1,69 +1,52 @@
 """
-In-memory storage for To-Do items.
-
-This module provides a simple in-memory database for managing To-Do items.
-The data is stored in a module-level list and will be reset when the
-application restarts.
+In-memory storage for ToDo items.
+This is a simple implementation for demonstration purposes and is not thread-safe.
 """
 
-from typing import List, Dict
-
-from webapp.models import Todo
-
-# In-memory database of To-Do items
-todos: List[Dict] = []
-_next_id: int = 1
+_TODOS = {}
+_NEXT_ID = 1
 
 
-def add_todo(title: str) -> Dict:
+def reset_storage():
+    """Resets the in-memory storage to its initial empty state."""
+    global _TODOS, _NEXT_ID
+    _TODOS = {}
+    _NEXT_ID = 1
+
+
+def get_all_todos() -> list[dict]:
+    """Returns a list of all ToDo items."""
+    return list(_TODOS.values())
+
+
+def add_todo(title: str) -> dict:
     """
-    Creates a new To-Do item, adds it to the in-memory list, and returns it.
+    Adds a new ToDo item to the storage.
 
     Args:
-        title: The title of the To-Do item.
+        title: The title of the ToDo item.
 
     Returns:
-        A dictionary representing the newly created To-Do item.
+        The newly created ToDo item as a dictionary.
     """
-    global _next_id
-    new_todo = Todo(id=_next_id, title=title)
-    
-    todo_dict = new_todo.model_dump()
-    todos.append(todo_dict)
-    
-    _next_id += 1
-    return todo_dict
-
-
-def list_todos() -> List[Dict]:
-    """
-    Returns the list of all To-Do items.
-
-    Returns:
-        A list of dictionaries, where each dictionary is a To-Do item.
-    """
-    return todos[:]
+    global _NEXT_ID
+    todo_id = _NEXT_ID
+    _TODOS[todo_id] = {"id": todo_id, "title": title}
+    _NEXT_ID += 1
+    return _TODOS[todo_id]
 
 
 def delete_todo(todo_id: int) -> bool:
     """
-    Deletes a To-Do item by its ID.
+    Deletes a ToDo item by its ID.
 
     Args:
-        todo_id: The ID of the To-Do item to delete.
+        todo_id: The ID of the ToDo item to delete.
 
     Returns:
         True if the item was found and deleted, False otherwise.
     """
-    global todos
-    todo_to_delete = None
-    for todo in todos:
-        if todo["id"] == todo_id:
-            todo_to_delete = todo
-            break
-            
-    if todo_to_delete:
-        todos.remove(todo_to_delete)
+    if todo_id in _TODOS:
+        del _TODOS[todo_id]
         return True
-    
     return False

@@ -1,13 +1,18 @@
-# Main application dependencies
-ghapi
-python-dotenv
+# Agent dependencies
 openai
-rich
+python-dotenv
+apprise
+PyGithub
+python-json-logger
+tiktoken
 
 # Dashboard dependencies
 streamlit
 pandas
 plotly
+requests
 
-# Webapp dependencies
-pydantic
+# WebApp dependencies
+fastapi
+uvicorn[standard]
+httpx

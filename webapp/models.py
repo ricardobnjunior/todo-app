@@ -1,19 +1,10 @@
-"""
-Data models for the ToDo application.
-"""
-from pydantic import BaseModel, Field
-from datetime import datetime, timezone
+from pydantic import BaseModel
 
-
-def _generate_iso_timestamp() -> str:
-    """Returns the current UTC time in ISO 8601 format."""
-    return datetime.now(timezone.utc).isoformat()
-
+class TodoCreate(BaseModel):
+    """Model for creating a new todo item."""
+    title: str
 
 class Todo(BaseModel):
-    """
-    Represents a single ToDo task.
-    """
+    """Model representing a todo item."""
     id: int
     title: str
-    created_at: str = Field(default_factory=_generate_iso_timestamp)

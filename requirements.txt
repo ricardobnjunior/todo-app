@@ -1,0 +1,7 @@
+anthropic
+python-dotenv
+fastapi-poe
+ghapi
+pygithub
+rich
+pydantic

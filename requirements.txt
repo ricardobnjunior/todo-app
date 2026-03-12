@@ -1,9 +1,6 @@
-# Core application dependencies for src/
-ghapi
-openai
-
-# Webapp dependencies
-pydantic
-
-# Testing dependencies
+fastapi
+uvicorn[standard]
+# The existing dependencies are unknown.
+# Assuming pygithub and pytest are part of them based on repository context.
+pygithub
 pytest

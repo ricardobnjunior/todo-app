@@ -1,0 +1,9 @@
+# Core application dependencies for src/
+ghapi
+openai
+
+# Webapp dependencies
+pydantic
+
+# Testing dependencies
+pytest

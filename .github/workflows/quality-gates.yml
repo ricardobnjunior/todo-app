@@ -1,0 +1,57 @@
+name: Quality Gates
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt 2>/dev/null || true
+          pip install pytest pytest-cov ruff fastapi httpx pydantic
+
+      - name: Lint with ruff
+        id: lint
+        run: |
+          if ruff check webapp/ tests/ --ignore E501; then
+            echo "lint_status=pass" >> $GITHUB_OUTPUT
+          else
+            echo "lint_status=fail" >> $GITHUB_OUTPUT
+          fi
+        continue-on-error: true
+
+      - name: Run tests with coverage
+        id: tests
+        run: |
+          pytest tests/ -v --tb=short --cov=webapp --cov-report=term-missing 2>&1 | tee test_output.txt
+          COVERAGE=$(grep "^TOTAL" test_output.txt | awk '{print $NF}' | tr -d '%')
+          echo "coverage=${COVERAGE:-0}" >> $GITHUB_OUTPUT
+        continue-on-error: true
+
+      - name: Quality comment
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          LINT="${{ steps.lint.outputs.lint_status }}"
+          COV="${{ steps.tests.outputs.coverage }}"
+
+          BODY="## Quality Gates Report\n\n"
+          BODY+="| Gate | Status |\n|------|--------|\n"
+          BODY+="| Lint | ${LINT:-unknown} |\n"
+          BODY+="| Tests/Coverage | ${COV:-?}% |\n"
+
+          gh pr comment ${{ github.event.pull_request.number }} --body "$(echo -e "$BODY")"

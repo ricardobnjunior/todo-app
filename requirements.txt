@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+ghapi
+humanize
+openai
+streamlit
+python-dotenv
+requests
+loguru
+pydantic

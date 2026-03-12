@@ -1,0 +1,5 @@
+ghapi
+openai
+pydantic
+python-dotenv
+rich

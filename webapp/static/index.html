@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToDo List</title>
+    <style>
+        /* General Body Styling */
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding-top: 40px;
+        }
+
+        /* Main Container */
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        /* Form for adding new tasks */
+        .form-container {
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        #todo-input {
+            flex-grow: 1;
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 4px 0 0 4px;
+            outline: none;
+        }
+
+        #todo-input:focus {
+            border-color: #007bff;
+        }
+
+        #add-btn {
+            padding: 0 25px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        #add-btn:hover {
+            background-color: #0056b3;
+        }
+
+        /* Task List */
+        #todo-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        /*
+         * Styles for dynamically added list items.
+         * JavaScript will create <li> elements with a <span> for the text
+         * and a <button> for deletion.
+         * Example:
+         * <li>
+         *   <span>Task text here</span>
+         *   <button class="delete-btn">X</button>
+         * </li>
+        */
+        #todo-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+            transition: background-color 0.2s;
+        }
+
+        #todo-list li:last-child {
+            border-bottom: none;
+        }
+
+        #todo-list li:hover {
+            background-color: #f9f9f9;
+        }
+
+        .delete-btn {
+            background-color: transparent;
+            border: none;
+            color: #ff3b30;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            padding: 0 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <main class="container">
+        <h1>ToDo List</h1>
+        <section>
+            <!-- Form to add tasks. The outer div helps with layout. -->
+            <form onsubmit="return false;" class="form-container">
+                <input type="text" id="todo-input" placeholder="Digite uma tarefa...">
+                <button id="add-btn">Adicionar</button>
+            </form>
+        </section>
+        <section>
+            <!-- The list of tasks will be populated here by JavaScript -->
+            <ul id="todo-list">
+                <!-- Example of how a list item will look (for styling reference) -->
+                <!--
+                <li>
+                    <span>Example task</span>
+                    <button class="delete-btn">X</button>
+                </li>
+                -->
+            </ul>
+        </section>
+    </main>
+
+    <!-- JavaScript file will be loaded here -->
+    <script src="/static/app.js"></script>
+</body>
+</html>

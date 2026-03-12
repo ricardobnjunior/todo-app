@@ -1,50 +1,56 @@
-from webapp.models import Todo
+"""
+In-memory storage for the To-Do list application.
 
-# Module-level in-memory storage for todos
-# A list of dictionaries, where each dictionary represents a todo.
-todos: list[dict] = []
+This module provides a simple, non-persistent storage mechanism for to-do items.
+It is intended for demonstration purposes and will lose all data upon application restart.
+"""
 
-# Module-level counter for the next available todo ID.
+_todos: dict[int, dict] = {}
 _next_id: int = 1
+
+
+def get_all_todos() -> list[dict]:
+    """Returns a list of all to-do items."""
+    return list(_todos.values())
+
 
 def add_todo(title: str) -> dict:
     """
-    Creates a new todo with a unique ID and timestamp, adds it to the
-    in-memory list, and returns the new todo as a dictionary.
+    Adds a new to-do item to the storage.
 
     Args:
-        title: The title of the todo.
+        title: The title of the to-do item.
 
     Returns:
-        A dictionary representing the newly created todo.
+        A dictionary representing the newly created to-do item.
     """
     global _next_id
-    new_todo = Todo(id=_next_id, title=title)
-    todo_dict = new_todo.model_dump()
-    todos.append(todo_dict)
+    new_todo = {"id": _next_id, "title": title}
+    _todos[_next_id] = new_todo
     _next_id += 1
-    return todo_dict
+    return new_todo
 
-def list_todos() -> list[dict]:
-    """
-    Returns a copy of the list of all todos.
 
-    Returns:
-        A list of dictionaries, where each dictionary is a todo.
+def delete_todo(todo_id: int) -> dict | None:
     """
-    return todos[:]
-
-def delete_todo(todo_id: int) -> bool:
-    """
-    Deletes a todo from the in-memory list based on its ID.
+    Deletes a to-do item by its ID.
 
     Args:
-        todo_id: The ID of the todo to delete.
+        todo_id: The ID of the to-do item to delete.
 
     Returns:
-        True if a todo was found and deleted, False otherwise.
+        The deleted to-do item if found, otherwise None.
     """
-    global todos
-    initial_len = len(todos)
-    todos = [todo for todo in todos if todo.get("id") != todo_id]
-    return len(todos) < initial_len
+    if todo_id in _todos:
+        return _todos.pop(todo_id)
+    return None
+
+
+def _reset_storage():
+    """
+    Resets the in-memory storage to its initial state.
+    This function is intended for testing purposes.
+    """
+    global _todos, _next_id
+    _todos.clear()
+    _next_id = 1

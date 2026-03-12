@@ -1,1 +1,1 @@
-# This file marks the 'webapp' directory as a Python package.
+# This file makes the 'webapp' directory a Python package.

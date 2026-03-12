@@ -1,0 +1,13 @@
+# Main application dependencies
+ghapi
+python-dotenv
+openai
+rich
+
+# Dashboard dependencies
+streamlit
+pandas
+plotly
+
+# Webapp dependencies
+pydantic

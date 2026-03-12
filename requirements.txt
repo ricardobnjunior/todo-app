@@ -1,8 +1,7 @@
-fastapi
-ghapi
 openai
-pydantic
+PyGithub
 python-dotenv
-pyyaml
-rich
-uvicorn
+pytest
+httpx
+fastapi
+uvicorn[standard]
